@@ -7,6 +7,9 @@ class Categorie(Convention):
     name = models.CharField(max_length=250)
 
     class Meta:
+        abstract = True
+
+    class Meta:
         verbose_name = 'Categorie'
         verbose_name_plural = 'Categories'
 
