@@ -1,5 +1,7 @@
 
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.shortcuts import render,get_object_or_404
+from django.core.paginator import Paginator
 from contactapp import models as models_contact
 from portfolioapp import models as models_portfolio
 from . import models
@@ -52,9 +54,18 @@ def pricing(request):
 
 
 def work(request):
+    page = request.GET.get('page')
+    page = page if page else 1
     categorieWorks = models_portfolio.CategorieWork.objects.filter(status=True)
     transforms = models_portfolio.Transform.objects.filter(status=True)
     works = models_portfolio.Work.objects.filter(status=True)
+    paginator = Paginator(works,3)
+    try:
+        works_list = paginator.page(page)
+    except PageNotAnInteger:
+        works_list = paginator.page(1)
+    except EmptyPage:
+        works_list = paginator.page(paginator.num_pages)
     socials = models_contact.Social.objects.filter(status=True)
     sites = models.Website.objects.filter(status=True).first()
     return render(request, 'work.html', locals())
