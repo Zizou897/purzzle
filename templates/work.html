@@ -29,14 +29,17 @@
             <div class="filter-btns shadow-md rounded-pill text-center col-auto">
                 <a class="filter-btn btn rounded-pill btn-outline-primary border-0 m-md-2 px-md-4 active" data-filter=".project" href="#">All</a>
                 {% for categorieWork in categorieWorks%}
-                <a class="filter-btn btn rounded-pill btn-outline-primary border-0 m-md-2 px-md-4" data-filter=".{{categorieWork.name}}" href="#">{{categorieWork.name}}</a>
+                <a class="filter-btn btn rounded-pill btn-outline-primary border-0 m-md-2 px-md-4" data-filter=".cat{{categorieWork.id}}" href="#">{{categorieWork.name}}</a>
                 {% endfor %}
             </div>
         </div>
 
         <div class="row projects gx-lg-5">
-        {% for work in works%}
-            <a href="{% url 'work_single' work.id %}" class="col-sm-6 col-lg-4 text-decoration-none project  {{work.categorieWork.name}}">
+        {% for cat in categorieWorks %}
+            {% for work in cat.categorie_work.all %}
+            
+            
+            <a href="{% url 'work_single' work.id %}" class="col-sm-6 col-lg-4 text-decoration-none project  cat{{cat.id}}">
                 <div class="service-work overflow-hidden card mb-5 mx-5 m-sm-0">
                     <img class="card-img-top" src="{{work.image.url}}" alt="...">
                     <div class="card-body">
@@ -50,6 +53,7 @@
                     </div>
                 </div>
             </a>
+            {% endfor %}
         {% endfor %}    
         </div>
         <div class="row">
